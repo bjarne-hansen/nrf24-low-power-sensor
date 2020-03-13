@@ -12,8 +12,6 @@ The wiring below targets an Arduino Nano that is used for testing the sketch.  A
 
 
 
-
- 
     Wiring:
 
     I always use the same colour code for the wires connecting the RF24 modules. 
@@ -32,24 +30,27 @@ The wiring below targets an Arduino Nano that is used for testing the sketch.  A
     |1|2|   black  |  red
     +-+-+----------------------
  
-    The following layout is for the Arduino NANO.
+    The following layout is for the Arduino Uno/NANO.
  
-         RF24L01                 NANO
-    -------------------------------------
-    PIN DESC  COLOR           PIN   GPIO
-    1   GND   black   <--->   GND    -
-    2   3.3V  red     <--->   3V3    -
-    3   CE    yellow  <--->   14     10 
-    4   CSN   orange  <--->   13      9 
-    5   SCKL  green   <--->   17     13    
-    6   MOSI  blue    <--->   15     11 
-    7   MISO  purple  <--->   16     12 
-    8   IRQ           <--->   N/C    - 
+         RF24L01              Arduino
+    ------------------------------------
+    PIN DESC  COLOR           
+    1   GND   black   <--->   GND
+    2   3.3V  red     <--->   3V3
+    3   CE    yellow  <--->   D10 
+    4   CSN   orange  <--->   D9 
+    5   SCKL  green   <--->   D13    
+    6   MOSI  blue    <--->   D11 
+    7   MISO  purple  <--->   D12 
+    8   IRQ           <--->   N/C
     
       DS3231     NANO
-    ----------------------
-     GND  <-->   -  GND  
-     VCC  <-->   -  3V3
-     SDA  <-->  27   A4
-     SCL  <-->  28   A5
- 
+    -----------------------
+     GND  <-->  GND  
+     VCC  <-->  3V3
+     SDA  <-->  A4  SDA
+     SCL  <-->  A5  SCL
+     SQW  <-->  D2  INT0
+     
+
+   
