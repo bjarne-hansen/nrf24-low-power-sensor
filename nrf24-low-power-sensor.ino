@@ -321,8 +321,8 @@ int next_minute()
   m = minute(dt);
 
   // Calculate next minute.
-  // nm = ((int)((m + 1)/1.0 + 0.5)) % 60 * 1 - 1;    // Every minute
-  nm = ((int)((m + 2)/2.0 + 0.5)) % 30 * 2 - 1;       // Every 2 minutes
+  nm = ((int)((m + 1)/1.0 + 0.5)) % 60 * 1 - 1;    // Every minute
+  // nm = ((int)((m + 2)/2.0 + 0.5)) % 30 * 2 - 1;    // Every 2 minutes
   // nm = ((int)((m + 5)/5.0 + 0.5)) % 12 * 5 - 1;    // Every 5 minutes
   // nm = ((int)((m + 10)/10.0 + 0.5)) % 6 * 10 - 1;  // Every 10 minutes
   // nm = ((int)((m + 15)/15.0 + 0.5)) % 4 * 15 - 1;  // Every 15 minutes
@@ -339,10 +339,13 @@ int next_second()
   return 58;  
 }
 
-//
+// ****************************************************************
 // Code for synchronizing the current date/time from a time server.
-//
+// ****************************************************************
 
+//
+// Configure RF24 to receive date/time.
+//
 void setupDateTimeClient() 
 {
   radio.begin();  
@@ -362,6 +365,9 @@ void setupDateTimeClient()
   radio.printDetails();  
 }
 
+//
+// Initialize the RTC
+//
 void setupRTC()
 {
   // Setup RTC with basic defaults.
@@ -374,6 +380,9 @@ void setupRTC()
   RTC.squareWave(SQWAVE_NONE);
 }
 
+//
+// Receive date/time from a server.
+//
 time_t receiveDateTime() 
 {
   tmElements_t tm;
@@ -446,12 +455,18 @@ time_t receiveDateTime()
   } 
 } 
 
+//
+// Update the RTC with the date/time in the parameter.
+//
 void updateRTCDateTime(time_t dt)
 {
   // Set RTC clock to the specified date/time.
   RTC.set(dt);  
 }
 
+//
+// Print date/time on serial.
+//
 void printDateTime(time_t t)
 {
     // Print year.
@@ -464,6 +479,10 @@ void printDateTime(time_t t)
     print(minute(t) < 10 ? "0" : ""); print(minute(t)); print(':');
     print(second(t) < 10 ? "0" : ""); print(second(t));
 }
+
+//
+// Printing utilities.
+//
 
 void print(const char *s)
 {
