@@ -11,6 +11,10 @@
 //
 // To conserve power, the CPU enters deep sleep, and power for the sensors is
 // disconnected via a 2N3904 transistor.
+// 
+// This template uses a DHT22 sensor to measure temperature and humidity.  See 
+// the Fritzing sketches in the fritzing folder to easily modify the design for
+// your particular usage.
 //
 // The code below contains debug statements printing information on the Arduino 
 // IDE serial monitor. They can be removed by undefining the DEBUG_PRINT constant.
@@ -37,29 +41,29 @@
 //   https://github.com/bjarne-hansen/nrf24-gateway
 //
 
-// NRF24L01 communication libraries.
+// "RF24" by TMRh20
 //   https://tmrh20.github.io/RF24/
 #include <printf.h>
 #include <RF24.h>
 
-// Time library 
+// "Time" by Michael Margolis
 //   https://playground.arduino.cc/Code/Time/
-#include <TimeLib.h>
+#include <time.h>
 
-// DS3232RTC by Jack Christensen
+// "DS3232RTC" by Jack Christensen
 //   https://github.com/JChristensen/DS3232RTC
 #include <DS3232RTC.h>
 
-// Low-Power by Rocket Scream Electronics
+// "Low-Power" by Rocket Scream Electronics
 //   https://github.com/rocketscream/Low-Power
 #include <LowPower.h>
 
-// "DHT sensor library by Adafruit"
+// "DHT sensor library" by Adafruit
 //   https://github.com/adafruit/DHT-sensor-library
 #include <DHT.h>
 #include <DHT_U.h>
 
-// "Battery Sense"
+// "Battery Sense" by AgileWare
 //   https://github.com/rlogiacco/BatterySense
 #include <Battery.h>
 
