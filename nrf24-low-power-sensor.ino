@@ -69,7 +69,7 @@
 
 // Enable/disable debugging output on serial.
 #define DEBUG_PRINT
-#undef  DEBUG_NRF24
+#include "debug.h"
 
 #define PIN_INT       2       // PIN used for interrupt. INT0 on an Arduino.  
 #define PIN_RELAY     4       // PIN used for 2N3904 "relay" for turning on/off power to sensors.
@@ -146,9 +146,7 @@ void setup()
   // Start the NRF24 module.
   debug_println("- NRF24 ...");
   nrf24_setup();
-  #ifdef DEBUG_NRF24
-  debug_nrf24_details(radio);
-  #endif
+  debug_nrf24(radio);
   
   // Receive current date/time via NRF24L01.
   debug_println("- NRF24 (date/time) ...");
@@ -176,10 +174,8 @@ void loop()
 {
   // Tell that we are going to take a nap.
   debug_println("Going to sleep.");
+  debug_delay(50); 
   
-  // Delay to make sure we see message before CPU goes to sleep.
-  delay(50); 
-
   // Power down radio and sensors, before we go to sleep ...
   radio.powerDown();
   digitalWrite(PIN_RELAY, LOW);
@@ -195,9 +191,9 @@ void loop()
     // Print current date/time.
     debug_println(RTC.get());
 
-    // Power up radio and sensors.
+    // Power up radio and sensors, and wait a couple of seconds for the
+    // sensor to settle.
     radio.powerUp();
-    
     digitalWrite(PIN_RELAY, HIGH);
     delay(2000);
     
@@ -501,186 +497,3 @@ void flash_led(int count, int onms, int offms)
     delay(offms);      
   }    
 }
-
-
-
-//
-// Functions for debugging low-power NRF24L01 solutions.
-//
-
-void debug_begin()
-{
-  #ifdef DEBUG_PRINT
-  Serial.begin(9600);
-  #endif
-  #ifdef __PRINTF_H__
-  printf_begin();
-  #endif
-  
-}
-
-void debug_print(byte n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(char n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(short n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(int n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(unsigned int n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(long n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-
-void debug_print(float n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(double n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(n);
-  #endif
-}
-
-void debug_print(const char* s)
-{
-  #ifdef DEBUG_PRINT
-  Serial.print(s);
-  #endif    
-}
-
-void debug_println()
-{
-  #ifdef DEBUG_PRINT
-  Serial.println();
-  #endif  
-}
-
-void debug_println(byte n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(char n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(short n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(int n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(unsigned int n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(long n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(float n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(double n)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(n);
-  #endif    
-}
-
-void debug_println(const char* s)
-{
-  #ifdef DEBUG_PRINT
-  Serial.println(s);
-  #endif  
-}
-
-#ifdef __RF24_H__
-void debug_nrf24_details(RF24 r)
-{
-  #ifdef __PRINTF_H__
-  r.printDetails();
-  #endif
-}
-#endif
-
-#ifdef _Time_h
-void debug_print(time_t t)
-{
-    // Print year-month-day.
-    debug_print(year(t)); debug_print("-");
-    debug_print(month(t) < 10 ? "0" : ""); debug_print(month(t)); debug_print("-");
-    debug_print(day(t) < 10 ? "0" : ""); debug_print(day(t)); 
-
-    debug_print(" ");
-    
-    // Print time.
-    debug_print(hour(t) < 10 ? "0" : ""); debug_print(hour(t)); debug_print(':');
-    debug_print(minute(t) < 10 ? "0" : ""); debug_print(minute(t)); debug_print(':');
-    debug_print(second(t) < 10 ? "0" : ""); debug_print(second(t));    
-}
-
-void debug_println(time_t t)
-{
-  debug_print(t);
-  debug_println();
-}
-#endif
