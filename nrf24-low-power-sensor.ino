@@ -320,31 +320,20 @@ boolean nrf24_receive(int timeout)
 
 void nrf24_setup()
 {
-
-  
-#define NRF24_CHANNEL         100           // 0 ... 125
-#define NRF24_CRC_LENGTH      RF24_CRC_16   // RF24_CRC_DISABLED, RF24_CRC_8, RF24_CRC_16 for 16-bit
-#define NRF24_DATA_RATE       RF24_250KBPS  // RF24_2MBPS, RF24_1MBPS, RF24_250KBPS
-#define NRF24_PAYLOAD_SIZE    32            // Max. 32 bytes.
-
-#define NRF24_PA_LEVEL        RF24_PA_MAX   // RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX    
-#define NRF24_RETRY_DELAY     5             // Delay bewteen retries, 1..15.  Multiples of 250µs.
-#define NRF24_RETRY_COUNT     15            // Number of retries, 1..15.
-
-
   radio.begin();
-  radio.setChannel(NRF24_CHANNEL);
-  radio.setCRCLength(NRF24_CRC_LENGTH);
-  radio.setDataRate(NRF24_DATA_RATE);        
-  radio.setPayloadSize(NRF24_PAYLOAD_SIZE);
+  
+  radio.setAutoAck(true);                 
+  radio.enableDynamicPayloads();          
   radio.setPALevel(NRF24_PA_LEVEL);
   radio.setRetries(NRF24_RETRY_DELAY, NRF24_RETRY_COUNT);              
   
-  radio.setAutoAck(true);                 // Automatic ack.   
-  radio.enableDynamicPayloads();          // Payload size is dynamic.
+  radio.setDataRate(NRF24_DATA_RATE);          
+  radio.setChannel(NRF24_CHANNEL);
+  radio.setCRCLength(NRF24_CRC_LENGTH);
+  radio.setPayloadSize(NRF24_PAYLOAD_SIZE);
   
-  radio.openWritingPipe(sensor_tx_addr);  // Send to address.
-  radio.openReadingPipe(1, time_rx_addr); // Receive date/time on pipe 1.  
+  radio.openWritingPipe(sensor_tx_addr);  
+  radio.openReadingPipe(1, time_rx_addr); 
   radio.stopListening();                  
 }
 
